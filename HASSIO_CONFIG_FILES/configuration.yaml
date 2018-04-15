@@ -1,0 +1,158 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 33.1809
+  longitude: -96.9177
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 176
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Chicago
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+  api_password: !secret http_password
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor:
+  - platform: yr
+  - platform: darksky
+    api_key: !secret forecast_io_api_key
+    monitored_conditions:
+      - summary
+      - icon
+      - nearest_storm_distance
+      - nearest_storm_bearing
+      - precip_type
+      - precip_intensity
+      - precip_probability
+      - temperature
+      - apparent_temperature
+      - dew_point
+      - wind_speed
+      - wind_bearing
+      - cloud_cover
+      - humidity
+      - pressure
+      - visibility
+      - ozone
+      - minutely_summary
+      - hourly_summary
+      - daily_summary
+      - temperature_max
+      - temperature_min
+      - apparent_temperature_max
+      - apparent_temperature_min
+      - precip_intensity_max
+      
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+
+mqtt:
+
+light:
+  - platform: mqtt
+    name: 'Demo Light'
+    state_topic: 'office/light/status'
+    command_topic: "office/light/switch"
+    optimistic: false
+
+  - platform: mqtt
+    name: "Livingroom dimmer"
+    state_topic: "smartthings/Livingroom dimmer/status"
+    command_topic: "smartthings/Livingroom dimmer/switch"
+    brightness_state_topic: 'smartthings/Livingroom dimmer/brightness'
+    brightness_command_topic: 'smartthings/Livingroom dimmer/brightness/set'
+    qos: 0
+    # payload_on: "ON"
+    # payload_off: "OFF"
+    optimistic: false    
+    
+
+# Example configuration.yaml entry
+input_number:
+ lr_dimmer:
+  name: Office Lights
+  initial: 0
+  min: 0
+  max: 50
+  step: 10
+
+
+group:
+  office:
+    name: Office
+    entities:
+     - input_number.lr_dimmer
+     - media_player.office_home
+     
+  game_room:
+    name: Game Room
+    entities:
+     - media_player.living_room_tv
+
+  living_room:
+    name: Living Room
+    entities:
+    #  - media_player.living_room_tv
+     - light.livingroom_dimmer
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://192.168.0.117:3218
+
+ 
+ 
+    
+#group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

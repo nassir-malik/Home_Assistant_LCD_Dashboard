@@ -1,0 +1,45 @@
+title: Main Panel
+widget_dimensions: [120, 120]
+widget_margins: [5, 5]
+columns: 4
+
+layout:
+    - include: top_panel
+    - include: main_middle_panel
+    - include: mode_panel
+    - include: bottom_panel
+
+clock:
+    widget_type: clock
+    date_style: "color: white"
+    time_style: "color: white"
+    widget_style: "background-color: rgba(220, 89, 69,1);"
+    
+weather:
+    widget_type: weather
+    units: "&deg;F"
+    main_style: "color: white; font-size:100%;"
+    sub_style: "color: white; font-size: 75%;"
+    widget_style: "background-color: rgba(245,147,0,1);"
+
+lightdimmer:
+    title: Light Dimmer
+    widget_type: input_number
+    entity: input_number.lr_dimmer
+
+
+demo-light:
+    title: Demo Light
+    widget_type: light
+    entity: light.demo_light
+
+
+wind:
+    title: Wind Bearing
+    widget_type: sensor
+    entity: sensor.dark_sky_wind_bearing
+
+
+layout:
+    - clock(2x1), weather(2x2), wind (2x1)
+    - demo-light (2x1),lightdimmer (2x1)
